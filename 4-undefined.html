@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+	<div id="results"></div>
+	
+	<script type="text/javascript">
+		(function() {
+			function write(message) {
+				document.getElementById('results').innerHTML += message + '<br />';
+			}
+			
+			var notAssigned;
+			write(notAssigned);
+			
+			if (!notAssigned) {
+				write('undefined evaluates to false');
+			}
+			
+			var stooge = {
+				name: 'Curly'
+			};
+			
+			write('Type: ' + typeof stooge.age + ' Value: ' + stooge.age);
+		})();
+	</script>	
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+	<div id="results"></div>
+	<script type="text/javascript">
+		(function () {
+			// Polyfill if not an ES5 compliant browser
+			if (!Function.prototype.bind) {  
+				Function.prototype.bind = function (oThis) {  
+					if (typeof this !== "function") {  
+						// closest thing possible to the ECMAScript 5 internal IsCallable function  
+						throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");  
+					}  
+
+					var aArgs = Array.prototype.slice.call(arguments, 1),   
+						fToBind = this,   
+						fNOP = function () {},  
+						fBound = function () {  
+							return fToBind.apply(this instanceof fNOP  
+												 ? this  
+												 : oThis || window,  
+											   aArgs.concat(Array.prototype.slice.call(arguments)));  
+						};  
+
+					fNOP.prototype = this.prototype;  
+					fBound.prototype = new fNOP();  
+
+					return fBound;  
+				};  
+			}  		
+		})();
+	</script>
+	<script type="text/javascript">
+		(function() {
+			function write(message) {
+				document.getElementById('results').innerHTML += message + '<br />';
+			}
+			
+			function square (x, y) {
+				return x * y;
+			};
+			
+			function add (x, y) {
+				return x + y;
+			};
+			
+			// Augment the object
+			var counter = {
+				value: 0,
+				increment: function (inc) {
+					this.value += typeof inc === 'number' ? inc : 1;
+				}
+			};
+			
+			// Old way of fixing scope issue
+			counter.square = function () {
+				var that = this;
+				var helper = function () {
+					that.value = square(that.value, that.value);
+				};
+				
+				helper();
+			};
+			
+			counter.increment(3);
+			write('Incrememented Value: ' + counter.value);
+			counter.square();
+			write('Squared Value: ' + counter.value);			
+			
+			// ES5 Hotness
+			counter.double = function () {
+				var helper = (function () {
+					this.value = add(this.value, this.value);
+				}).bind(this);
+				
+				helper();
+			};			
+			
+			counter.increment(4);
+			write('Incrememented Value: ' + counter.value);
+			counter.double();
+			write('Doubled Value: ' + counter.value);	
+			
+		})();
+	</script>	
+</body>
+</html>

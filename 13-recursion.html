@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+	<div id="results"></div>
+	<script type="text/javascript">
+			
+	</script>
+	<script type="text/javascript">
+		// Immediately execute me with renames of globals
+		(function(global, document) {
+			function write(message) {
+				document.getElementById('results').innerHTML += message + '<br />';
+			}
+			
+			var factorial = function factorial(x) {
+				if (x < 2) {
+					return 1;
+				}
+				return x * factorial(x - 1);
+			};
+			
+			// Non-tail recursive factorial
+			write('Non-tail recursive factorial: ' + factorial(10));
+			
+			factorial = function factorial (x, acc) {
+				acc = acc || 1;
+				if (x < 2) {
+					return acc;
+				}
+				return factorial(x - 1, acc * x);
+			};
+			
+			// tail recursive factorial
+			write('Tail recursive factorial: ' + factorial(10));			
+		})(this, document);
+	</script>	
+</body>
+</html>

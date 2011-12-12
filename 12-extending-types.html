@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+	<div id="results"></div>
+	<script type="text/javascript">
+			
+	</script>
+	<script type="text/javascript">
+		// Immediately execute me with renames of globals
+		(function(global, document) {
+			function write(message) {
+				document.getElementById('results').innerHTML += message + '<br />';
+			}
+			
+			String.prototype.capitalCase = function () {
+				return this.charAt(0).toUpperCase() + this.slice(1);
+			};
+			
+			write('Capitalized: ' + 'foobar'.capitalCase());
+			
+			// Extend the Function
+			Function.prototype.method = function (name, fn) {
+				if (!this.prototype[name]) {
+					this.prototype[name] = fn;
+					return this;
+				}
+			};
+			
+			Number.method('integer', function () {
+				return Math[this < 0 ? 'ceil' : 'floor'](this);
+			});
+			
+			var i = (-20 / 3).integer();
+			write('Rounded: ' + i);
+		})(this, document);
+	</script>	
+</body>
+</html>

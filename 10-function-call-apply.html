@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+	<div id="results"></div>
+	
+	<script type="text/javascript">
+		// Immediately execute me with renames of globals
+		(function(global, document) {
+			function write(message) {
+				document.getElementById('results').innerHTML += message + '<br />';
+			}
+			
+			function add(x, y) {
+				return x + y;
+			}
+			
+			var added1 = add(3, 4); // Normal invocation
+			write('Normal added: ' + added1);
+			
+			var args = [3, 4];
+			var added2 = add.apply(/* this */ null, args);
+			write('Apply added: ' + added2);
+			
+			var added3 = add.call(/* this */ null, 3, 4);
+			write('Call added: ' + added2);			
+			
+			// Make the 'this' call more meaningful
+			var logger = {
+				log: function (message) {
+					write(message);
+				}
+			};
+			
+			function loggingAdd(x, y) {
+				// Assume there is a logger somewhere
+				var result = x + y;
+				this.log('Result: ' + result);
+				return result;
+			};
+			
+			var added4 = loggingAdd.apply(/* this */ logger, [5, 6]);
+			write('Apply added with logging: ' + added4);
+			
+			var added5 = loggingAdd.call(/* this */ logger, 5, 6);
+			write('Call added with logging: ' + added5);		
+
+			// Mixins
+			var Person = function (firstName, lastName) {
+				this.firstName = firstName;
+				this.lastName = lastName;
+			};
+			
+			Person.prototype.getFullName = function() {
+				return this.firstName + ' ' + this.lastName;
+			};
+			
+			var p = new Person('Bill', 'Gates');
+			write('Full Name: ' + p.getFullName());
+			
+			var me = {
+				firstName: 'Matthew',
+				lastName: 'Podwysocki'
+			};
+			
+			var fullName = Person.prototype.getFullName.apply(me);
+			write('Full Name with apply: ' + fullName);
+		})(this, document);
+	</script>	
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+	<div id="results"></div>
+	
+	<script type="text/javascript">
+		// Immediately execute me with renames of globals
+		(function(global, document) {
+			function write(message) {
+				document.getElementById('results').innerHTML += message + '<br />';
+			}
+			
+			// When part of a class, it is called a method
+			var counter = {
+				value: 0,
+				increment: function (inc) {
+					this.value += typeof inc === 'number' ? inc : 1;
+				}
+			};
+			
+			counter.increment();
+			write('Value: ' + counter.value);
+			counter.increment(3);
+			write('Value: ' + counter.value);
+				
+		})(this, document);
+	</script>	
+</body>
+</html>

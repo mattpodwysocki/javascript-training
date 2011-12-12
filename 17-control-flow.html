@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+	<div id="results"></div>
+	<script type="text/javascript">
+			
+	</script>
+	<script type="text/javascript">
+		// Immediately execute me with renames of globals
+		(function(global, document) {
+			function write(message) {
+				document.getElementById('results').innerHTML += message + '<br />';
+			}
+			
+			// If statement
+			var count = 0;
+			if ( count === 0) {
+				write('Count is zero');
+			} else {
+				write('Count isn\'t zero');
+			}
+			
+			while (count++ < 5) {
+				write('While count: ' + count);
+			}
+			
+			do {
+				write('Do While count: ' + count);
+			} while (count-- > 0);
+			
+			try {
+				throw new Error('This is an error');
+			} catch (e) {
+				write('Exception caught: ' + e);
+			} finally {
+				write('some action that is always called');
+			}
+			
+		})(this, document);
+	</script>	
+</body>
+</html>

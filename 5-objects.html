@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+	<div id="results"></div>
+	
+	<script type="text/javascript">
+		(function() {
+			function write(message) {
+				document.getElementById('results').innerHTML += message + '<br />';
+			}
+			
+			// Empty object
+			var empty = {};
+			write(empty.toString());
+			
+			// Using object
+			var curly = new Object();
+			curly.firstName = 'Curly';
+			write(curly.firstName);
+			
+			// Also can reference by string!
+			write(curly['firstName']);
+			
+			// Object literal
+			var moe = { 
+				firstName: 'Moe',
+				lastName: 'Howard'
+			};
+			write('Name: ' + moe.firstName + ' ' + moe.lastName);
+			
+			// Update an object
+			var age = moe.age || 'unknown';
+			write('Age Before: ' + age);
+			moe.age = 43;
+			age = moe.age || 'unknown';
+			write('Age After: ' + age);
+			
+			// Create another stooge
+			Object.prototype.create = Object.prototype.create || function(o) {
+				var F = function() {};
+				F.prototype = o;
+				return new F();
+			};
+			
+			var shemp = Object.create(moe);
+			shemp.firstName = 'Shemp';
+			shemp.age = 46;
+		
+			// Reflection
+			write('Has age: ' + shemp.hasOwnProperty('age'));
+			write('Has middle: ' + shemp.hasOwnProperty('middleName'));
+			
+			// Iterate the properties
+			var prop;
+			for (prop in shemp) {
+				if (typeof shemp[prop] !== 'function') {
+					if (shemp.hasOwnProperty(prop)) {
+						write('Shemp Property Name: ' + prop + ' Property Value: ' + shemp[prop]);
+					} else {
+						write('Base Property Name: ' + prop + ' Property Value: ' + shemp[prop]);
+					}
+				}
+			}
+			
+			// Remove a property
+			write('Age before: ' + shemp.age);
+			delete shemp.age;
+			write('Age after: ' + shemp.age);
+			
+			// Compound object to namespace
+			var StoogeApplication.stooge = {
+				firstName: 'Larry',
+				lastName: 'Fine',
+				address: {
+					street: '123 Any St',
+					city: 'Philadelphia',
+					state: 'PA'
+				}
+			};
+			
+		})();
+	</script>	
+</body>
+</html>

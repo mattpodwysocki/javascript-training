@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<head>
+	<script type="text/javascript" src="jquery.js"></script>
+	<script type="text/javascript">
+		(function($) {
+			
+			function log (message) {
+				$('<p>' + message + '</p>').appendTo($('#results'));
+			}
+			
+			$(document).ready(function () {
+				
+				// Select all paragraphs
+				var paragraphs = $('p');		
+				log('Number of paragraphs: ' + paragraphs.length);
+				
+				// Manipulate!
+				paragraphs.css('background-color', 'green');
+				
+				// Iterate
+				paragraphs.each(function () {
+					log('Paragraph HTML: ' + $(this).html());
+				});
+				
+				// Select all paragraphs and spans
+				var sp = $('p, span');
+				log('Number of paragraphs and spans: ' + sp.length);
+				
+				// Select all table rows
+				var rows = $('table tr');
+				log('Number of table rows: ' + rows.length);
+				
+				// Alternate colors
+				rows.each(function (idx) {
+					if (idx % 2 === 0) {
+						$(this).css('background-color', 'blue');
+					}
+				});
+				
+				// Select by ID
+				var para1 = $('#para1');
+				para1.css('color', 'purple');
+				
+				// Largely the same as
+				var para2 = document.getElementById('para1');
+				log('Inner HTML: ' + para2.innerHTML);
+				
+				// Select by class name
+				var classy = $('.classy');
+				log('Number of classy elements: ' + classy.length);
+				
+				// Can combine with elements
+				var classyAnchors = $('a.classy');
+				log('Number of classy anchor elements: ' + classyAnchors.length);
+				
+				// Select by title
+				var titledParagraphs = $('p[title]');
+				log('Number of titled paragraphs: ' + titledParagraphs.length);
+				
+				// Select by title with a particular name
+				var titledParagraphs1 = $('p[title = "ParagraphTitle1"]');
+				log('Number of titled paragraphs with ParagraphTitle1: ' + titledParagraphs1.length);	
+
+				// Select all inputs includes input, radio, button, image, select and more
+				var inputs = $(':input');
+				log('Number of inputs: ' + inputs.length);
+				
+				// Select only the text inputs
+				var textInputs = $(':input[type="text"]');
+				log('Number of text inputs: ' + textInputs.length);
+				
+				// Using contains to find data
+				var thisContainer = $('p:contains("This")');
+				log('Number of paragraphs containing "This": ' + thisContainer.length);
+				
+				// Select odd and even rows
+				var evenRows = $('table tr:even');
+				var oddRows = $('table tr:odd');
+				log('Number of even rows: ' + evenRows.length);
+				log('Number of odd rows: ' + oddRows.length);
+				
+				// Select first-child of our results
+				var firstChild = $('span:first-child');
+				log('First child of results: ' + firstChild.length);
+				
+				// Find our input that starts with click me!
+				var clickMe = $('input:[value^="Click"]');
+				log('Value of starts with Click: ' + clickMe.length);
+				
+				// Find out input that ends with !
+				var exclamations = $('input:[value$="!"]');
+				log('Number of inputs with exclamations: ' + exclamations.length);
+				
+				// Find which input contains too
+				var too = $('input:[value*="too"]');
+				log('Value of one with too: ' + too.val());
+			});
+
+		})(jQuery);
+	</script>	
+</head>
+<body>
+	<span class="classy">This is a span</span>
+	<div id="results"></div>
+	<p id="para1" title="ParagraphTitle1">This is a paragraph</p>
+	<p title="ParagraphTitle2">This is another paragraph</p>
+	<p title="ParagraphTitle3">That is another paragraph</p>
+	<a href="#" class="classy">This is a hyperlink</a>
+	<table>
+		<tr>
+			<td>This is a table cell</td>
+		</tr>
+		<tr>
+			<td>This is another table cell</td>
+		</tr>	
+		<tr>
+			<td>This is yet another table cell</td>
+		</tr>	
+	</table>
+	<input type="text" value="Hello world"></input>
+	<input type="button" value="Click me too!"></input>
+	<input type="button" value="Click me!"></input>
+	
+	<div>
+		<span>First of first</span>
+		<span>Second of first</span>
+	</div>
+	<div>
+		<span>First of second</span>
+		<span>Second of second</span>
+	</div>	
+</body>
+</html>

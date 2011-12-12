@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+	<div id="results"></div>
+	
+	<script type="text/javascript">
+		(function() {
+			function write(message) {
+				document.getElementById('results').innerHTML += message + '<br />';
+			}
+			
+			function add(first, second) {
+				a = first;
+				return a + second;
+			}
+
+			write('1 + 2 = ' + add(1, 2));
+			write('a: ' + a);
+			write('54 + 18 = ' + add(54, 18));
+			write('a: ' + a);
+			
+			if (!window.a) {
+				write('a is undefined');
+			}
+		})();
+	</script>	
+</body>
+</html>

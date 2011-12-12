@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+	<div id="results"></div>
+	
+	<script type="text/javascript">
+		(function() {
+			function write(message) {
+				document.getElementById('results').innerHTML += message + '<br />';
+			}
+			
+			var myValue = null;
+			if (!myValue) {
+				write('null evaluates to false');
+			}
+			
+			var hasValue = 1; // 0;
+			if (hasValue) {
+				write('hasValue has a value');
+			}
+		})();
+	</script>	
+</body>
+</html>

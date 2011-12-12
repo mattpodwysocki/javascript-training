@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+	<div id="results"></div>
+	<script type="text/javascript">
+			
+	</script>
+	<script type="text/javascript">
+		// Immediately execute me with renames of globals
+		(function(global, document) {
+			function write(message) {
+				document.getElementById('results').innerHTML += message + '<br />';
+			}
+			
+			Function.prototype.method = function (name, func) {
+				if (!this.prototype[name]) {
+					this.prototype[name] = func;
+					return this;
+				}
+			};
+			
+			Function.method('curry', function () {
+				var slice = Array.prototype.slice,
+					args = slice.call(arguments),
+					self = this;
+				return function () {
+					return self.apply(null, args.concat(slice.call(arguments)));
+				};
+			});
+			
+			var CreditCard = {
+				CARDS: {
+					Visa: /^4[0-9]{12}(?:[0-9]{3})?$/,
+					MasterCard: /^5[1-5][0-9]{14}$/,
+					DinersClub: /^3(?:0[0-5]|[68][0-9])[0-9]{11}$/,
+					Amex: /^3[47][0-9]{13}$/,
+					Discover: /^6(?:011|5[0-9]{2})[0-9]{12}$/
+				},
+				strip: function (number) {
+					while (number.search(/\s/) !== -1) {
+						number = number.replace(/\s/,'');
+					}
+					return number;
+				}
+			};
+					
+			for(var card in CreditCard.CARDS) {
+				CreditCard['is'+card] = (function (card, number) {
+					return CreditCard.CARDS[card].test(CreditCard.strip(number));
+				}).curry(card);	
+			}
+
+			var card1 = '6011 0000 0000 0000';
+			write('Is ' + card1 + ' Discover? ' + CreditCard.isDiscover(card1));
+			
+			// Memoization
+			var memoizer = function (memo, fundamental) {
+				var shell = function (n) {
+					var result = memo[n];
+					if (typeof result !== 'number') {
+						result = fundamental(shell, n);
+						memo[n] = result;
+					}
+					return result;
+				};
+				return shell;
+			};
+			
+			var fibonacci = memoizer([0, 1], function (shell, n) {
+				return shell(n - 1) + shell (n - 2);
+			});
+			
+			write('10th Fibonacci: ' + fibonacci(10));
+			
+			var factorial = memoizer([1, 1], function (shell, n) {
+				return n * shell(n - 1);
+			});
+			
+			write('10th Factorial: ' + factorial(10));
+		})(this, document);
+	</script>	
+</body>
+</html>

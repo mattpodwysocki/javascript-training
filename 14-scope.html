@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+	<div id="results"></div>
+	<script type="text/javascript">
+			
+	</script>
+	<script type="text/javascript">
+		// Immediately execute me with renames of globals
+		(function(global, document) {
+			function write(message) {
+				document.getElementById('results').innerHTML += message + '<br />';
+			}
+			
+			// Scope of value trapped
+			var counter = (function () {
+				var value = 0;
+				return {
+					getValue : function() { return value; },
+					increment: function(inc) {
+						value += typeof inc === 'number' ? inc : 1;
+					}
+				};
+			})();
+			
+			write('Scoped initial: ' + counter.getValue());
+			counter.increment(3);
+			write('Scoped increment by 3: ' + counter.getValue());
+			write('Count defined? ' + (counter.count !== undefined));
+			
+			// Fade DOM
+			var fade = function (node) {
+				var level = 1;
+				var step = function() {
+					var hex = level.toString(16);
+					node.style.backgroundColor = '#FFFF' + hex + hex;
+					if (level++ < 15) {
+						setTimeout(step, 100);
+					}
+				};
+				setTimeout(step, 100);
+			};
+			fade(document.body);
+			
+			// Loop and closures
+			(function () {
+				var i, arr = [];
+				for (i = 0; i < 6; i++) {
+					arr.push(function() {
+						write('Value: ' + i);
+					});
+				}
+				
+				var j;
+				for (j = 0; j < arr.length; j++) {
+					arr[j]();
+				}
+			})();
+			
+			// Fix the closure issue
+			(function () {
+				var i, arr = [];
+				for (i = 0; i < 6; i++) {
+					(function (i) {
+						arr.push(function() {
+							write('Fixed value: ' + i);
+						});
+					})(i);
+				}
+				
+				var j;
+				for (j = 0; j < arr.length; j++) {
+					arr[j]();
+				}
+			})();			
+		})(this, document, undefined);
+	</script>	
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+	<div id="results"></div>
+	<script type="text/javascript">
+			
+	</script>
+	<script type="text/javascript">
+		// Immediately execute me with renames of globals
+		(function(global, document) {
+			function write(message) {
+				document.getElementById('results').innerHTML += message + '<br />';
+			}
+			
+			Function.prototype.method = function (name, func) {
+				this.prototype[name] = func;
+				return this;
+			};
+			
+			Function.method('inheritSimple', function (Parent) {
+				this.prototype = new Parent();
+				return this;
+			});
+			
+			// Naive inheritance
+			var Employee = function (id, name) {
+				this.id = id;
+				this.name = name;
+			};
+			Employee.prototype.calculatePay = function (hours) {
+				return 0;
+			};
+			Employee.prototype.toString = function () {
+				return 'ID: ' + this.id + ' Name: ' + this.name;
+			};
+			
+			var HourlyEmployee = function(id, name, rate) {
+				this.id = id;
+				this.name = name;
+				this.rate = rate;
+			}
+			.inheritSimple(Employee)
+			.method('calculatePay', function (hours) {
+				return hours * this.rate;
+			});
+			
+			var e = new Employee(1, 'Bill Gates');
+			write(e.toString());
+			
+			var h = new HourlyEmployee(2, 'Steve Ballmer', 500);
+			write(h.toString() + ' paid: ' + h.calculatePay(40));
+			
+			// Classical inheritance
+			var hasProp = Object.prototype.hasOwnProperty, 
+				inherits = function (child, parent) { 
+					for (var key in parent) { 
+						if (hasProp.call(parent, key)) {
+							child[key] = parent[key]; 
+						}
+					} 
+					function ctor() { this.constructor = child; }
+					
+					ctor.prototype = parent.prototype; 
+					child.prototype = new ctor; 
+					child.base = parent.prototype; 
+					return child; 
+				};
+				
+			var SalariedEmployee = (function () {
+				function SalariedEmployee (id, name, salary) {
+					this.id = id;
+					this.name = name;
+					this.salary = salary;
+				}
+				
+				SalariedEmployee.prototype.calculatePay = function (hours) {
+					return this.salary;
+				};
+				SalariedEmployee.prototype.toString = function () {
+					return 'ID: ' + this.id + ' Name: ' + this.name;
+				};
+				
+				return SalariedEmployee;
+			})();			
+				
+			var OvertimeEmployee = (function () {
+				inherits(OvertimeEmployee, SalariedEmployee);
+				
+				function OvertimeEmployee () {
+					OvertimeEmployee.base.constructor.apply(this, arguments);
+				}
+				
+				OvertimeEmployee.prototype.calculatePay = function (hours) {
+					var additional = 0;
+					if (hours > 40) {
+						additional = (hours - 40) * (this.salary * 1.5);
+					}
+					var salary = OvertimeEmployee.base.calculatePay.apply(this, arguments);
+					return salary + additional;
+				};
+				
+				return OvertimeEmployee;
+			})();
+			
+			var s = new SalariedEmployee(3, 'Douglas Crockford', 123456);
+			write(s.toString() + ' was paid ' + s.calculatePay(50));
+			
+			var s = new OvertimeEmployee(3, 'Brendan Eich', 123456);
+			write(s.toString() + ' was paid ' + s.calculatePay(50));			
+			
+		})(this, document);
+	</script>	
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+	<div id="results"></div>
+	
+	<script type="text/javascript">
+		(function() {
+			function write(message) {
+				document.getElementById('results').innerHTML += message + '<br />';
+			}
+			
+			// Double equal wonkiness
+			var w = 0, x = false, y = null, z;
+			write('w and x equals? ' + (w == x));
+			write('y and z equals? ' + (y == z));
+			write('1 and "1" equals?' + (1 == '1'));
+			
+			// Fix that!
+			write('fixed w and x equals? ' + (w === x));
+			write('fixed y and z equals? ' + (y === z));	
+			write('1 and "1" equals?' + (1 === '1'));
+			
+			// References
+			var a = {}, b = {}, c = {};
+			var areSame = a === b && b === c;
+			write('All the same? ' + areSame);			
+			a = b = c = {};
+			areSame = a === b && b === c;
+			write('All the same? ' + areSame);			
+			
+		})();
+	</script>	
+</body>
+</html>

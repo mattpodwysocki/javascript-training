@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+	<div id="results"></div>
+	<script type="text/javascript">
+		// Polyfill Array.reduce
+		if ( !Array.prototype.reduce ) {  
+		  Array.prototype.reduce = function reduce(accumulator){  
+				var i, l = this.length, curr;  
+				  
+				if(typeof accumulator !== "function") // ES5 : "If IsCallable(callbackfn) is false, throw a TypeError exception."  
+				  throw new TypeError("First argument is not callable");  
+		  
+				if((l == 0 || l === null) && (arguments.length <= 1))// == on purpose to test 0 and false.  
+				  throw new TypeError("Array length is 0 and no second argument");  
+				  
+				if(arguments.length <= 1){  
+				  curr = this[0]; // Increase i to start searching the secondly defined element in the array  
+				  i = 1; // start accumulating at the second element  
+				}  
+				else{  
+				  curr = arguments[1];  
+				}  
+				  
+				for(i = i || 0 ; i < l ; ++i){  
+				  if(i in this)  
+					curr = accumulator.call(undefined, curr, this[i], i, this);  
+				}  
+				  
+				return curr;  
+			  };  
+		  }  	
+	</script>
+	<script type="text/javascript">
+		// Immediately execute me with renames of globals
+		(function(global, document) {
+			function write(message) {
+				document.getElementById('results').innerHTML += message + '<br />';
+			}
+			
+			// Static number of arguments
+			var add = function (x, y) {
+				return x + y;
+			};
+			
+			write('Add number of arguments: ' + add(3, 4));
+			write('Add too few arguments: ' + add(3));
+			write('Add too many arguments: ' + add(3, 4, 5));
+			
+			// Overloading add
+			add = function (x, y) {
+				var stringify = function (s) {
+					return typeof s === 'string' ? global.parseInt(s) : s;
+				};
+				x = stringify(x);
+				y = stringify(y);
+				return x + y;
+			};
+			
+			write('Add with integers: ' + add(3, 4));
+			write('Add with string and int: ' + add('3', 4));
+			write('Add with strings: ' + add('3', '4'));
+			
+			// Iterating through arguments, remember this isn't a normal array
+			add = function () {
+				var sum = 0, i;
+				write('Arguments length: ' + arguments.length);
+				for (i = 0; i < arguments.length; i++) {
+					sum += arguments[i];
+				}
+				
+				return sum;
+			};
+			
+			var add1 = add(1,2,3,4);
+			write('Iterating add: ' + add1);
+			
+			// But we can make it an array via Array.prototype.slice.call
+			var slice = Array.prototype.slice;
+			add = function () {
+				var args = slice.call(arguments);
+				write('Arguments: ' + args);
+				var args2 = slice.call(arguments, 1);
+				write('Arguments skipping 1: ' + args2);
+				
+				// Using ES5 Array extras to calculate
+				return args.reduce(function (acc, item) {
+					return acc + item;
+				});
+			};
+			
+			var add2 = add(5,6,7,8);
+			write('Functional add: ' + add2);
+			
+			// Default arguments
+			var defaultComparer = function(x, y) { return x === y; };
+			Array.prototype.contains = function(value, comparer) {
+				comparer || (comparer = defaultComparer);
+				var i, length = this.length;
+				for (i = 0; i < length; i++) {
+					if (comparer(value, this[i])) {
+						return true;
+					}
+				}
+				return false;
+			};
+			
+			var arr1 = [1,2,3];
+			write('Contains 3 with default comparer: ' + arr1.contains(3));
+			
+			var arr2 = [
+				{ name: 'Larry' },
+				{ name: 'Curly' },
+				{ name: 'Moe' }
+			];
+			var comparer = function(x, y) { return x === y.name; };
+			write('Contains with comparer and Larry: ' + arr2.contains('Larry', comparer));
+			
+		})(this, document);
+	</script>	
+</body>
+</html>

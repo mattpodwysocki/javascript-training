@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+	<div id="results"></div>
+	
+	<script type="text/javascript">
+		(function() {
+			function write(message) {
+				document.getElementById('results').innerHTML += message + '<br />';
+			}
+			
+			var name = 'Matthew';
+			write('Type: ' + typeof name + ' Value: ' + name);
+			
+			var number = 1234;
+			write('Type: ' + typeof number + ' Value: ' + number);	
+
+			write('write type: ' + typeof write);
+		})();
+	</script>	
+</body>
+</html>

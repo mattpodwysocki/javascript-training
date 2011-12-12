@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<head>
+	<script type="text/javascript" src="jquery.js"></script>
+	<script type="text/javascript">
+		(function($) {
+			
+			function log (message) {
+				$('<p>' + message + '</p>').appendTo($('#results'));
+			}
+			
+			$(document).ready(function () {
+				
+				// Handle click on button1
+				var count = 0;
+				$('#button1').click(function () {
+					count++;
+					log('Button1 clicked: ' + count);
+				});
+				
+				// Handle key up on input
+				$('#text1').bind('keyup', function (ev) {
+					log('New text: ' + $(this).val());
+				});
+				
+				$("body").delegate("p", "click", function(){
+					  $(this).after("<p>Another paragraph!</p>");
+				});
+			});
+
+		})(jQuery);
+	</script>	
+</head>
+<body>
+	<span class="classy">This is a span</span>
+	<div id="results"></div>
+	<p id="para1" title="ParagraphTitle1">This is a paragraph</p>
+	<p title="ParagraphTitle2">This is another paragraph</p>
+	<p title="ParagraphTitle3">That is another paragraph</p>
+	<a href="#" class="classy">This is a hyperlink</a>
+	<a href="#" class="classy">This is another hyperlink</a>
+	<table>
+		<tr>
+			<td>This is a table cell</td>
+		</tr>
+		<tr>
+			<td>This is another table cell</td>
+		</tr>	
+		<tr>
+			<td>This is yet another table cell</td>
+		</tr>	
+	</table>
+	<input type="text" value="Hello world" id="text1"> </input>
+	<input id="button1" type="button" value="Click me too!"></input>
+	<input type="button" value="Click me!"></input>
+	
+	<div>
+		<span>First of first</span>
+		<span>Second of first</span>
+	</div>
+	<div>
+		<span>First of second</span>
+		<span>Second of second</span>
+	</div>	
+</body>
+</html>

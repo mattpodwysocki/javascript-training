@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+	<div id="results"></div>
+	
+	<script type="text/javascript">
+		// Immediately execute me with renames of globals
+		(function(global, document) {
+			function write(message) {
+				document.getElementById('results').innerHTML += message + '<br />';
+			}
+			
+			var Person = function (firstName, lastName) {
+				this.firstName = firstName;
+				this.lastName = lastName;
+			};
+			
+			Person.prototype.getFullName = function() {
+				return this.firstName + ' ' + this.lastName;
+			};
+			
+			var p = new Person('Bill', 'Gates');
+			write('Full Name: ' + p.getFullName());
+		})(this, document);
+	</script>	
+</body>
+</html>
